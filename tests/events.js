@@ -51,23 +51,13 @@ describe( 'handlePlusMinus', () => {
   };
 
   it( 'logs an attempt by a user to increment their own score', () => {
-    const mentions = [
-      {
-        item: user,
-        operation: '+'
-      }
-    ];
+    const mentions = [ { item: user, operation: '+' } ];
     events.handlePlusMinus( mentions, user, channel );
     expect( console.log ).toHaveBeenCalledTimes( 1 );
   });
 
   it( 'gets a message from the \'self plus\' collection', () => {
-    const mentions = [
-      {
-        item: user,
-        operation: '+'
-      }
-    ];
+    const mentions = [ { item: user, operation: '+' } ];
     events.handlePlusMinus( mentions, user, channel );
 
     expect( messages.getRandomMessage )
@@ -82,12 +72,7 @@ describe( 'handlePlusMinus', () => {
     slack.sendMessage = jest.fn();
     slack.setSlackClient( slackClientMock );
 
-    const mentions = [
-      {
-        item: user,
-        operation: '+'
-      }
-    ];
+    const mentions = [ { item: user, operation: '+' } ];
     events.handlePlusMinus( mentions, user, channel );
 
     expect( slack.sendMessage )
@@ -103,17 +88,7 @@ describe( 'handlePlusMinus', () => {
     slack.setSlackClient( slackClientMock );
     points.updateScore = jest.fn();
 
-    const operation = '+';
-    const mentions = [
-      {
-        item,
-        operation
-      },
-      {
-        item: item2,
-        operation
-      }
-    ];
+    const mentions = [ { item: item, operation: '+' }, { item: item2, operation: '+' } ];
     events.handlePlusMinus( mentions, user, channel ).then( () => {
       expect( points.updateScore )
         .toHaveBeenCalledTimes( 2 )
@@ -137,16 +112,7 @@ describe( 'handlePlusMinus', () => {
       points.updateScore = jest.fn( updateScoreMock );
       messages.getRandomMessage = jest.fn();
 
-      const mentions = [
-        {
-          item,
-          operation
-        },
-        {
-          item: item2,
-          operation
-        }
-      ];
+      const mentions = [ { item: item, operation: operation }, { item: item2, operation: operation } ];
       return events.handlePlusMinus( mentions, user, channel ).then( () => {
         expect( messages.getRandomMessage )
           .toHaveBeenCalledTimes( 2 )
@@ -167,16 +133,7 @@ describe( 'handlePlusMinus', () => {
     points.updateScore = jest.fn();
     slack.sendMessage = jest.fn();
 
-    const mentions = [
-      {
-        item,
-        operation: '+'
-      },
-      {
-        item: item2,
-        operation: '+'
-      }
-    ];
+    const mentions = [ { item: item, operation: '+' }, { item: item2, operation: '+' } ]
     return events.handlePlusMinus( mentions, user, channel ).then( () => {
       expect( slack.sendMessage )
         .toHaveBeenCalledTimes( 1 )

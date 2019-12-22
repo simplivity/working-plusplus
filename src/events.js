@@ -23,7 +23,7 @@ const camelCase = require( 'lodash.camelcase' );
  *
  * @param {object} mentions  Array of parsed objects from a Slack message with objects containing
  *                           the Slack user ID (if user) or name (if thing) of the item being
- *                           operated on and the +/- operation performed on the item's score.
+ *                           operated on and the mathematical operation performed on the item's score.
  * @param {object} user      The ID of the user (Uxxxxxxxx) who sent the message.
  * @param {object} channel   The ID of the channel (Cxxxxxxxx for public channels or Gxxxxxxxx for
  *                           private channels - aka groups) that the message was sent from.
@@ -32,21 +32,20 @@ const camelCase = require( 'lodash.camelcase' );
  */
 const handlePlusMinus = async( mentions, user, channel ) => {
 
-  const messageLines = [];
-  for ( const mention of mentions ) {
-
+  var messageLines = [];
+  for (const mention of mentions) {
     // Handle self plus as an event avoiding incrementing the score
     if ( mention.item === user && '+' === mention.operation ) {
       console.log( user + ' tried to alter their own score.' );
-      messageLines.push( messages.getRandomMessage( operations.operations.SELF, user ) );
+      messageLines.push(messages.getRandomMessage( operations.operations.SELF, user ));
     } else {
       const score = await points.updateScore( mention.item, mention.operation ),
             operationName = operations.getOperationName( mention.operation );
-      messageLines.push( messages.getRandomMessage( operationName, mention.item, score ) );
+      messageLines.push(messages.getRandomMessage( operationName, mention.item, score ));
     }
   }
 
-  return slack.sendMessage( messageLines.join( '\n' ), channel );
+  return slack.sendMessage( messageLines.join("\n"), channel );
 };
 
 /**

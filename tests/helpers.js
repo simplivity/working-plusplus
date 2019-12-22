@@ -74,44 +74,35 @@ describe( 'extractPlusMinusEventData', () => {
   });
 
   it( 'extracts a \'thing\' and operation from the start of a message', () => {
-    expect( helpers.extractPlusMinusEventData( '@SomethingRandom++ that was awesome' ) ).toEqual([
-      {
-        item: 'SomethingRandom',
-        operation: '+'
-      }
-    ]);
+    expect( helpers.extractPlusMinusEventData( '@SomethingRandom++ that was awesome' ) ).toEqual([{
+      item: 'SomethingRandom',
+      operation: '+'
+    }]);
   });
 
   it( 'extracts a user and operation from the start of a message', () => {
-    expect( helpers.extractPlusMinusEventData( '<@U87654321>++ that was awesome' ) ).toEqual([
-      {
-        item: 'U87654321',
-        operation: '+'
-      }
-    ]);
+    expect( helpers.extractPlusMinusEventData( '<@U87654321>++ that was awesome' ) ).toEqual([{
+      item: 'U87654321',
+      operation: '+'
+    }]);
   });
 
   it( 'extracts data in the middle of a message', () => {
-    expect( helpers.extractPlusMinusEventData( 'Hey @SomethingRandom++ you\'re great' ) ).toEqual([
-      {
-        item: 'SomethingRandom',
-        operation: '+'
-      }
-    ]);
+    expect( helpers.extractPlusMinusEventData( 'Hey @SomethingRandom++ you\'re great' ) ).toEqual([{
+      item: 'SomethingRandom',
+      operation: '+'
+    }]);
   });
 
   it( 'extracts data at the end of a message', () => {
-    expect( helpers.extractPlusMinusEventData( 'Awesome work @SomethingRandom++' ) ).toEqual([
-      {
-        item: 'SomethingRandom',
-        operation: '+'
-      }
-    ]);
+    expect( helpers.extractPlusMinusEventData( 'Awesome work @SomethingRandom++' ) ).toEqual([{
+      item: 'SomethingRandom',
+      operation: '+'
+    }]);
   });
 
   it( 'extracts multiple mentions in one message', () => {
-    const multiMentions = 'Thing one @SomethingRandom++ and thing two @SomethingElse--';
-    expect( helpers.extractPlusMinusEventData( multiMentions ) ).toEqual([
+    expect( helpers.extractPlusMinusEventData( 'Thing one @SomethingRandom++ and thing two @SomethingElse--' ) ).toEqual([
       {
         item: 'SomethingRandom',
         operation: '+'
@@ -171,12 +162,10 @@ describe( 'extractPlusMinusEventData', () => {
 
         it( testName, () => {
           const result = helpers.extractPlusMinusEventData( messageText );
-          expect( result ).toEqual([
-            {
-              item: item.expected,
-              operation: operation.expected
-            }
-          ]);
+          expect( result ).toEqual([{
+            item: item.expected,
+            operation: operation.expected
+          }]);
         });
 
       } // For iterator.
