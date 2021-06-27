@@ -30,7 +30,9 @@ const getLeaderboardUrl = ( request ) => {
     botUser: helpers.extractUserID( request.body.event.text )
   };
 
-  const url = 'https://' + hostname + '/leaderboard?' + querystring.stringify( params );
+  const urlbase = process.env.APPLICATION_URL ? process.env.APPLICATION_URL : 'http://' + hostname
+  const url = urlbase + '/leaderboard?' + querystring.stringify( params );
+
   return url;
 
 }; // GetLeaderboardUrl.
