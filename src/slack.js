@@ -55,7 +55,7 @@ const getUserList = async() => {
         usersCount++;
       }
 
-      flag = userList.response_metadata.next_cursour;
+      flag = userList.response_metadata.next_cursor;
       console.log("Next Flag: ", flag);
       pageCount++;
   } while (flag != '')
