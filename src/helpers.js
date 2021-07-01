@@ -93,7 +93,7 @@ const extractPlusMinusEventData = ( text ) => {
  * @see ::isUser
  */
 const extractUserID = ( text ) => {
-  const match = text.match( /U[A-Z0-9]{8}/ );
+  const match = text.match( /U[A-Z0-9]{8,10}/ );
   return match ? match[0] : '';
 };
 
@@ -165,14 +165,15 @@ const isTimeBasedTokenStillValid = ( token, ts ) => {
 };
 
 /**
- * Determines whether or not a string represents a Slack user ID - eg. U12345678.
+ * Determines whether or not a string represents a Slack user ID
+ * - eg. U12345678(old Id's),U1234567890(new Id's).
  *
  * @param {string} item The string in question.
  * @returns {Boolean} Whether or not the string is a Slack user ID.
  * @see ::extractUserID()
  */
 const isUser = ( item ) => {
-  return item.match( /U[A-Z0-9]{8}/ ) ? true : false;
+  return item.match( /U[A-Z0-9]{8,10}/ ) ? true : false;
 };
 
 /**
