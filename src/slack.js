@@ -82,7 +82,7 @@ const getEntUserList = async ( users ) => {
 
    var keys = Object.keys(users);
    for ( const userId of keys ) {
-      entusers[ users[userId].enterprise_user.id ] = id
+      entusers[ users[userId].enterprise_user.id ] = userId
    }
 
    return entusers
@@ -123,7 +123,7 @@ const getUserName = async( userId, username = false ) => {
  */
 const getEntUserId = async ( userId ) => {
 
-   const users = await getuserList(),
+   const users = await getUserList(),
          user = users[ userId ];
 
    if ( 'undefined' === typeof user ) {
