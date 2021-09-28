@@ -60,7 +60,7 @@ const extractCommand = ( message, commands ) => {
  *                   'operation' being done on it - expressed as a valid mathematical operation
  *                   (i.e. + or -).
  */
-const extractPlusMinusEventData = ( text ) => {
+const extractPlusMinusEventData = async ( text ) => {
   const matchAll = /@([A-Za-z0-9]+?)>?\s*(\+{2}|-{2}|—{1})/g;
   const matchOne = /@([A-Za-z0-9]+?)>?\s*(\+{2}|-{2}|—{1})/;
 
@@ -73,9 +73,10 @@ const extractPlusMinusEventData = ( text ) => {
   var data = [];
   for ( const match of matches ) {
     const parts = match.match( matchOne );
+    const entuserid = await slack.getEntUserId( parts[1] );
     data.push( 
       {
-        item: parts[1],
+        item: entuserid,
         operation: parts[2].substring( 0, 1 ).replace( '—', '-' )
       }
     )

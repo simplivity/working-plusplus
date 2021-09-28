@@ -117,10 +117,10 @@ const handlers = {
    * @return {bool|Promise} Either `false` if the event cannot be handled, or a Promise to send a
    *                        Slack message back to the requesting channel.
    */
-  message: ( event ) => {
+  message: async ( event ) => {
 
     // Extract the relevant data from the message text.
-    const mentions = helpers.extractPlusMinusEventData( event.text );
+    const mentions =await helpers.extractPlusMinusEventData( event.text );
 
     if ( ! mentions ) {
       return false;

@@ -10,7 +10,7 @@
 
 'use strict';
 
-let slack, users;
+let slack, users, entusers;
 
 /**
  * Injects the Slack client to be used for all outgoing messages.
@@ -67,6 +67,29 @@ const getUserList = async() => {
 }; // GetUserList.
 
 /**
+ * Given a collection Slack user ID, returns a collection of Slack user IDs indexed by the
+ * respective enterprise user IDs.
+ *
+ * @param {object} users  A collection of Slack user IDs
+ * @returns {object} a collection of Slack user IDs indexed by the respective enterprise user IDs (Uxxxxxxxxxx).
+ */
+const getEntUserList = async ( users ) => {
+
+   if ( entusers ) {
+     return entusers;
+   }
+   entusers = {};
+
+   var keys = Object.keys(users);
+   for ( const userId of keys ) {
+      entusers[ users[userId].enterprise_user.id ] = id
+   }
+
+   return entusers
+
+}; // GetEntUserList
+
+/**
  * Given a Slack user ID, returns the user's real name or optionally, the user's username. If the
  * user *does not* have a real name set, their username is returned regardless.
  *
@@ -80,10 +103,35 @@ const getUserName = async( userId, username = false ) => {
         user = users[ userId ];
 
   if ( 'undefined' === typeof user ) {
-    return '(unknown)';
+     const entusers = await getEntUserList( users ),
+          user = users[ entusers[ userId ] ];
+     if ( 'undefined' == typeof user ) {
+        return '(unknown)';
+     }
+     return username || ! user.profile.real_name ? user.name : user.profile.real_name;
   }
 
   return username || ! user.profile.real_name ? user.name : user.profile.real_name;
+
+};
+
+/**
+ * Given a Slack user ID, returns the repective enterprise user ID.
+ *
+ * @param {string} userId   A Slack user ID in the format Uxxxxxxxx.
+ * @returns {string}  The enterprise user ID
+ */
+const getEntUserId = async ( userId ) => {
+
+   const users = await getuserList(),
+         user = users[ userId ];
+
+   if ( 'undefined' === typeof user ) {
+      return userId;
+   }
+
+   console.log('Enterprise user ID: ' + user.enterprise_user.id);
+   return user.enterprise_user.id;
 
 };
 
@@ -128,6 +176,8 @@ const sendMessage = ( text, channel ) => {
 module.exports = {
   setSlackClient,
   getUserList,
+  getEntUserList,
   getUserName,
+  getEntUserId,
   sendMessage
 };
