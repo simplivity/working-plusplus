@@ -35,7 +35,8 @@ const handlePlusMinus = async( mentions, user, channel ) => {
   var messageLines = [];
   for (const mention of mentions) {
     // Handle self plus as an event avoiding incrementing the score
-    if ( mention.item === user && '+' === mention.operation ) {
+    const entuserid = await slack.getEntUserId( user );
+    if ( mention.item === entuserid && '+' === mention.operation ) {
       console.log( user + ' tried to alter their own score.' );
       messageLines.push(messages.getRandomMessage( operations.operations.SELF, user ));
     } else {
